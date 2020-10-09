@@ -15,6 +15,8 @@ class AppPreferences(context: Context?) {
     private var mPreferences: SharedPreferences
     private var PREFERENCES_NAME:String = "DeepLink_Preferences"
     private var LIST_URL:String = "LIST_URL"
+    private var SHOULD_SHOW_UPDATE_DIALOG:String = "SHOULD_SHOW_UPDATE_DIALOG"
+    private var LAST_VERSION_SHOW_POPUP:String = "LAST_VERSION_SHOW_POPUP"
 
     init {
         mPreferences = context?.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)!!
@@ -78,6 +80,22 @@ class AppPreferences(context: Context?) {
 
     fun removeLocalUrls(){
         mPreferences.edit().remove(LIST_URL).commit()
+    }
+
+    fun shouldShowUpdateDialog(): Boolean{
+        return mPreferences.getBoolean(SHOULD_SHOW_UPDATE_DIALOG, true)
+    }
+
+    fun setValueShouldShowDialog(status: Boolean){
+        mPreferences.edit().putBoolean(SHOULD_SHOW_UPDATE_DIALOG, status).commit()
+    }
+
+    fun setLastVersionShowPopup(version: String){
+        mPreferences.edit().putString(LAST_VERSION_SHOW_POPUP, version).commit()
+    }
+
+    fun getLastVersionShowPopup(): String{
+        return mPreferences.getString(LAST_VERSION_SHOW_POPUP,"")?:""
     }
 
 }

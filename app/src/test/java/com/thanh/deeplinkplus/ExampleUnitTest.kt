@@ -14,4 +14,19 @@ class ExampleUnitTest {
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
     }
+
+    @Test
+    fun testWith(){
+        var x = 1
+        var y = 1
+
+        var o1: TEST = TEST("THANH", 22)
+        var o2: TEST = TEST("THANH_2", 18)
+
+
+        print(o1.toString())
+
+    }
+
+    data class TEST(var name: String, var age: Int)
 }

@@ -2,22 +2,50 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Deelink plus"
+        android:textAllCaps="true"
+        android:textSize="@dimen/text_size_larger"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/colorPrimaryDark"
+        android:fontFamily="monospace"
+        android:padding="20dp"/>
 
     <EditText
         android:id="@+id/edt_deeplink"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="loshipuser://..."
+        android:hint="Deeplink://..."
         android:imeOptions="actionGo"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:layout_marginTop="20dp"
         android:singleLine="true"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+    <TextView
+        android:id="@+id/tvHint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        app:layout_constraintTop_toBottomOf="@id/edt_deeplink"
+        tools:text="link copy"
+        android:visibility="gone"
+        android:textColor="@color/gray_42"
+        android:background="@color/amber"
+        />
+
+
 
     <TextView
         android:id="@+id/btn_go"
@@ -28,22 +56,47 @@
         android:paddingTop="10dp"
         android:paddingRight="20dp"
         android:paddingBottom="10dp"
+        android:layout_marginTop="8dp"
         android:text="GO"
         android:textColor="#ffffff"
         android:layout_marginRight="15dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edt_deeplink" />
+        app:layout_constraintTop_toBottomOf="@id/tvHint" />
 
+    <TextView
+        android:id="@+id/btnCopy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_negative_background"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="10dp"
+        android:text="@string/copy_to_clipboard"
+        android:textColor="#ffffff"
+        android:layout_marginRight="15dp"
+        app:layout_constraintRight_toLeftOf="@id/btn_go"
+        app:layout_constraintTop_toTopOf="@id/btn_go" />
+    <TextView
+        android:id="@+id/tvHistory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/history"
+        android:textStyle="bold|italic"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintTop_toBottomOf="@id/btn_go"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_clear"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_go"
+        app:layout_constraintTop_toBottomOf="@id/tvHistory"
         tools:itemCount="10"
         tools:listitem="@layout/item_url" />
 
@@ -58,8 +111,27 @@
         android:paddingRight="20dp"
         android:paddingBottom="10dp"
         android:text="Xoá tất cả"
+        android:visibility="gone"
         android:layout_marginBottom="10dp"
         android:textColor="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/tvVersion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="15dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        tools:text="v.1.0.0"
+        android:textSize="@dimen/text_size_small"
+        android:textStyle="italic"
+        android:visibility="visible"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/gray_9c"
+        app:layout_constraintRight_toRightOf="@id/btn_clear"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

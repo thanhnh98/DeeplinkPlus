@@ -1,7 +1,13 @@
 package com.thanh.deeplinkplus.common.resources
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
 import android.content.res.Resources
+import android.util.Log
+import com.google.gson.Gson
+
 
 class Resources {
     companion object{
@@ -15,7 +21,23 @@ class Resources {
         }
 
         fun getResources(): Resources{
-            return  context.resources
+            return context.resources
+        }
+
+        fun getString(id: Int): String{
+            return getResources().getString(id)
+        }
+
+        fun getClipboard(): String{
+            val clipboard = getContext().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            return clipboard.primaryClip?.getItemAt(0)?.text.toString()
+        }
+
+        fun copyToClipboard(url: String){
+            val clipboard =
+                getContext().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("Copied Text", url)
+            clipboard.setPrimaryClip(clip)
         }
     }
 }

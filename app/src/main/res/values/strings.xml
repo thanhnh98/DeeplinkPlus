@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Deeplink Plus</string>
+    <string name="copy_to_clipboard">Copy</string>
+    <string name="history">History:</string>
+    <string name="coming_soon">Coming soon :></string>
+    <string name="err_msg_something_wrong">Something wrong, please try again!</string>
+    <string name="err_msg_not_found">Not found anything!</string>
+    <string name="not_found">Your history has nothing</string>
+    <string name="remove_all">Remove all</string>
+    <string name="version_name" translatable="false">v.%s</string>
+    <string name="copy_success">Copied</string>
+    <string name="dialog_update_title">Have new version on store</string>
+    <string name="dialog_update_des">Current version is: %old\n\nHave already new version on store (%new), update now to have best experience</string>
+    <string name="dialog_update_btn_close">Cancel</string>
+    <string name="dialog_update_btn_ok">Update</string>
 </resources>
