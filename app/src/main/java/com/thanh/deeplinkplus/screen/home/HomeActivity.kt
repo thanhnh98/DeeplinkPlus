@@ -3,7 +3,6 @@ package com.thanh.deeplinkplus.screen.home
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.thanh.deeplinkplus.R
@@ -20,13 +19,7 @@ import com.thanh.deeplinkplus.screen.home.item.IUrlRecycleViewListener
 import com.thanh.deeplinkplus.screen.home.item.UrlRecyclerViewItem
 import com.thanh.deeplinkplus.screen.home.item.empty_item.EmptyListRecycleViewItem
 import com.thanh.deeplinkplus.storage.AppPreferences
-import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlin.reflect.KClass
 
 class HomeActivity: BaseActivity<HomeContact.Presenter>(), HomeContact.View, IUrlRecycleViewListener{
@@ -37,8 +30,6 @@ class HomeActivity: BaseActivity<HomeContact.Presenter>(), HomeContact.View, IUr
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-
-        //testThreadling()
 
         mRecyclerManager = RecyclerManager()
 
@@ -79,24 +70,9 @@ class HomeActivity: BaseActivity<HomeContact.Presenter>(), HomeContact.View, IUr
             if (!isNullOrEmpty())
                 tvHint?.text = this
         }
-
         mPresenter.requestCheckingUpdate()
 
-    }
-
-    private fun testThreadling() {
-        showMessage("THANH")
-
-        runBlocking {
-            Log.e("thread current 2", Thread.currentThread().name)
-            delay(1000)
-            showMessage("THANH")
-
-        }
-        GlobalScope.launch {
-            Log.e("thread current 1", Thread.currentThread().name)
-        }
-
+        mPresenter.createDebounceEdt(edt_deeplink)
     }
 
     private fun addCluster() {
@@ -170,6 +146,10 @@ class HomeActivity: BaseActivity<HomeContact.Presenter>(), HomeContact.View, IUr
                 }
             AppPreferences.getInstance().setLastVersionShowPopup(update.version)
         }.show(supportFragmentManager)
+    }
+
+    override fun showLinkMode(mode: String) {
+        tv_mode?.text = getString(R.string.mode_link).replace("%s", mode)
     }
 
     private fun buildListItem(listData: List<UrlModel>): List<UrlRecyclerViewItem> {

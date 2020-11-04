@@ -11,7 +11,7 @@
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Deelink plus"
+        android:text="Deeplink plus"
         android:textAllCaps="true"
         android:textSize="@dimen/text_size_larger"
         android:textStyle="bold"
@@ -46,20 +46,20 @@
         />
 
 
-
     <TextView
         android:id="@+id/btn_go"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="15dp"
         android:background="@drawable/btn_background"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
         android:paddingRight="20dp"
         android:paddingBottom="10dp"
-        android:layout_marginTop="8dp"
+        android:rotationY="0"
         android:text="GO"
         android:textColor="#ffffff"
-        android:layout_marginRight="15dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvHint" />
 
@@ -77,6 +77,20 @@
         android:layout_marginRight="15dp"
         app:layout_constraintRight_toLeftOf="@id/btn_go"
         app:layout_constraintTop_toTopOf="@id/btn_go" />
+
+    <TextView
+        android:id="@+id/tv_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btnCopy"
+        android:text="Mode: ..."
+        android:textColor="@color/gray_9c"
+        android:textSize="12dp"
+        android:textStyle="italic"
+        android:layout_marginLeft="10dp"
+        android:gravity="top"/>
+
     <TextView
         android:id="@+id/tvHistory"
         android:layout_width="wrap_content"

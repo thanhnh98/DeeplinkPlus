@@ -13,4 +13,8 @@
     <string name="dialog_update_des">Current version is: %old\n\nHave already new version on store (%new), update now to have best experience</string>
     <string name="dialog_update_btn_close">Cancel</string>
     <string name="dialog_update_btn_ok">Update</string>
+    <string name="mode_link">Type: %s</string>
+    <string name="mode_deep_link">Deeplink</string>
+    <string name="mode_universal_link">Universal link</string>
+    <string name="mode_other">Khác</string>
 </resources>

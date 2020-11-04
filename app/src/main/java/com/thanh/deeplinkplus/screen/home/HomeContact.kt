@@ -2,6 +2,7 @@ package com.thanh.deeplinkplus.screen.home
 
 import android.content.Context
 import android.content.Intent
+import android.widget.EditText
 import com.thanh.deeplinkplus.common.base.IBasePresenter
 import com.thanh.deeplinkplus.common.base.IBaseView
 import com.thanh.deeplinkplus.model.UpdateModel
@@ -19,6 +20,7 @@ interface HomeContact {
         fun getClipboard(context: Context): String
         fun requestCheckingUpdate()
         fun onStatusShowDialogUpdateChanged(boolean: Boolean)
+        fun createDebounceEdt(edt: EditText)
     }
     interface View: IBaseView{
         fun onError(msg: String)
@@ -30,5 +32,6 @@ interface HomeContact {
         fun showWebView(url: String)
         fun copySuccess(msg: String)
         fun showDialogCheckingUpdate(update: UpdateModel)
+        fun showLinkMode(mode: String)
     }
 }

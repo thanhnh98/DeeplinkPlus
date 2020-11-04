@@ -6,10 +6,13 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
+import android.widget.EditText
 import com.thanh.deeplinkplus.R
 import com.thanh.deeplinkplus.common.base.BasePresenter
 import com.thanh.deeplinkplus.common.resources.Resources
+import com.thanh.deeplinkplus.extension.createDebounce
 import com.thanh.deeplinkplus.extension.isSafe
+import com.thanh.deeplinkplus.extension.text
 import com.thanh.deeplinkplus.model.ActionDataChanged
 import com.thanh.deeplinkplus.model.UpdateModel
 import com.thanh.deeplinkplus.model.UrlModel
@@ -27,24 +30,28 @@ class HomePresenter(view: View): BasePresenter<View>(view), Presenter {
 
     private var urlUseCase = UrlUseCase.getInstance()
     private lateinit var listUrl: MutableList<UrlModel>
-    val regex: Regex = Regex("^((https?|ftp|smtp):\\/\\/)?(www.)?[a-z0-9]+\\.[a-z]+(\\/[a-zA-Z0-9#]+\\/?)*\$")
+    val regexUniversal: Regex = Regex("^((https?|ftp|smtp):\\/\\/)?(www.)?[a-z0-9]+\\.[a-z]+(\\/[a-zA-Z0-9#]+\\/?)*\$")
+    val regexDeeplink: Regex = Regex("^(\\w*:\\/\\/)?[a-z0-9]*\$")
 
     override fun requestHandleIntent(link: String) {
         if (!link.isSafe()){
             mView.onError(Resources.getString(R.string.err_msg_something_wrong))
         }else{
             try {
-                if (link.matches(regex)){
+                if (link.matches(regexUniversal)){
                     mView.showWebView(link)
                     saveUrlToLocal(link, TypeUrl.UNIVERSAL_LINK)
                 }
-                else {
+                else if (link.matches(regexDeeplink)) {
                     mView.handleIntent(Intent().apply {
                         action = Intent.ACTION_VIEW
                         data = Uri.parse(link)
                     })
                     saveUrlToLocal(link, TypeUrl.DEEP_LINK)
                 }
+                else
+                    mView.onError(Resources.getString(R.string.err_msg_something_wrong))
+
             }catch (e: ActivityNotFoundException){
                 e.printStackTrace()
                 mView.onError(Resources.getString(R.string.err_msg_not_found))
@@ -136,18 +143,32 @@ class HomePresenter(view: View): BasePresenter<View>(view), Presenter {
     }
 
     override fun requestCheckingUpdate() {
-        val service: UpdateService = AppClient.createService(UpdateService::class.java)
-        add(service.getUpdateInfo()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {res -> shouldShowDialogUpdate(res)},
-                {err -> err.printStackTrace()}
-            ))
+//        val service: UpdateService = AppClient.createService(UpdateService::class.java)
+//        add(service.getUpdateInfo()
+//            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe(
+//                {res -> shouldShowDialogUpdate(res)},
+//                {err -> err.printStackTrace()}
+//            ))
     }
 
     override fun onStatusShowDialogUpdateChanged(boolean: Boolean) {
         AppPreferences.getInstance().setValueShouldShowDialog(!boolean)
+    }
+
+    override fun createDebounceEdt(edt: EditText) {
+        edt.createDebounce(mComposite){
+            mView.showLinkMode(getModeName(getModeIdByString(edt.text())))
+        }
+    }
+
+    private fun getModeIdByString(s: String): Int{
+        if(s.matches(regexUniversal))
+            return TypeUrl.UNIVERSAL_LINK
+        if (s.matches(regexDeeplink))
+            return TypeUrl.DEEP_LINK
+        return TypeUrl.OTHER
     }
 
     fun shouldShowDialogUpdate(update: UpdateModel){
@@ -180,5 +201,13 @@ class HomePresenter(view: View): BasePresenter<View>(view), Presenter {
                 return index
             }
         return -1
+    }
+
+    private fun getModeName(id: Int): String{
+        return when(id){
+            TypeUrl.DEEP_LINK -> Resources.getString(R.string.mode_deep_link)
+            TypeUrl.UNIVERSAL_LINK -> Resources.getString(R.string.mode_universal_link)
+            else -> Resources.getString(R.string.mode_other)
+        }
     }
 }
