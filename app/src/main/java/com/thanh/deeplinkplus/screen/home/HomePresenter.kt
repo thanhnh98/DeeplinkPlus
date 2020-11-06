@@ -31,7 +31,7 @@ class HomePresenter(view: View): BasePresenter<View>(view), Presenter {
     private var urlUseCase = UrlUseCase.getInstance()
     private lateinit var listUrl: MutableList<UrlModel>
     val regexUniversal: Regex = Regex("^((https?|ftp|smtp):\\/\\/)?(www.)?[a-z0-9]+\\.[a-z]+(\\/[a-zA-Z0-9#]+\\/?)*\$")
-    val regexDeeplink: Regex = Regex("^(\\w*:\\/\\/)?[a-z0-9]*\$")
+    val regexDeeplink: Regex = Regex("^(\\w*:\\/\\/).+\$")
 
     override fun requestHandleIntent(link: String) {
         if (!link.isSafe()){
@@ -42,7 +42,7 @@ class HomePresenter(view: View): BasePresenter<View>(view), Presenter {
                     mView.showWebView(link)
                     saveUrlToLocal(link, TypeUrl.UNIVERSAL_LINK)
                 }
-                else if (link.matches(regexDeeplink)) {
+                else if (link.matches(regexDeeplink)){
                     mView.handleIntent(Intent().apply {
                         action = Intent.ACTION_VIEW
                         data = Uri.parse(link)

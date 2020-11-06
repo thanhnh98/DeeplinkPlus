@@ -14,7 +14,7 @@ class AppClient {
         private var mInterceptor: RequestInterceptor? = null
         private const val TIMEOUT_TIME: Long = 60
 
-        private val HOST:String? = "https://raw.githubusercontent.com/thanhnh98/DeeplinkApi/main/"
+        private val HOST:String? = "https://github.com/thanhnh98/DeeplinkPlus/blob/master/app/src/main/assets/"
         @JvmStatic
         fun init(){
             val log: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {

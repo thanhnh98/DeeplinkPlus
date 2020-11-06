@@ -2,6 +2,7 @@
     <string name="app_name">Deeplink Plus</string>
     <string name="copy_to_clipboard">Copy</string>
     <string name="history">History:</string>
+    <string name="clear_all">Clear all</string>
     <string name="coming_soon">Coming soon :></string>
     <string name="err_msg_something_wrong">Something wrong, please try again!</string>
     <string name="err_msg_not_found">Not found anything!</string>

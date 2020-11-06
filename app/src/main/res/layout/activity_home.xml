@@ -124,7 +124,7 @@
         android:paddingTop="10dp"
         android:paddingRight="20dp"
         android:paddingBottom="10dp"
-        android:text="Xoá tất cả"
+        android:text="@string/clear_all"
         android:visibility="gone"
         android:layout_marginBottom="10dp"
         android:textColor="#ffffff"

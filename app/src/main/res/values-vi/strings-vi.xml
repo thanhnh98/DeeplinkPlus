@@ -3,6 +3,7 @@
     <string name="app_name">Deeplink Plus</string>
     <string name="copy_to_clipboard">Sao chép</string>
     <string name="history">Lịch sử truy cập:</string>
+    <string name="clear_all">Xoá tất cả</string>
 
 <!--    message-->
     <string name="coming_soon">Sắp cập nhập :></string>
