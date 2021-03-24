@@ -44,7 +44,7 @@ fun EditText.createDebounce(
     composite.add(
         RxTextView.textChanges(this)
             .debounce(debounceMillis, TimeUnit.MILLISECONDS)
-            .filter { str -> !str.isNullOrEmpty() && str.length >= minCharactersToHandle }
+            .filter { str -> str.isNotEmpty() && str.length >= minCharactersToHandle }
             .map(CharSequence::toString)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { res -> action(res) }
@@ -54,9 +54,12 @@ fun EditText.createDebounce(
 fun String.isSafe():Boolean{
     return !isNullOrEmpty() && !isNullOrBlank()
 }
-
-fun printMessage(mes: String){
-    Log.e("TAG", mes)
+fun String.toSafeUrl(): String{
+    return when {
+        this.contains("http://") -> this
+        this.contains("https://") -> this
+        else -> "https://$this"
+    };
 }
 
 fun View.fadeIn(duration: Long): Completable {

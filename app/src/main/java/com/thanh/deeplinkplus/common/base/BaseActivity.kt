@@ -2,19 +2,24 @@ package com.thanh.deeplinkplus.common.base
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 
-abstract class BaseActivity<T:IBasePresenter>: AppCompatActivity() {
+abstract class BaseActivity: AppCompatActivity() {
 
-    protected var mPresenter: T = getPresenter()
-    protected abstract fun getPresenter(): T
+    private lateinit var baseViewModel: BaseViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mPresenter.onViewCreated()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mPresenter.onDestroy()
+        if (this::baseViewModel.isInitialized)
+            baseViewModel.onDestroy()
+    }
+
+    internal fun initViewModel(viewModel: BaseViewModel){
+        baseViewModel = ViewModelProvider(this).get(viewModel::class.java)
+        baseViewModel.init()
     }
 }

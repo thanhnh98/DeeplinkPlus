@@ -24,4 +24,8 @@ class UrlModel(
 ){
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
+
+    override fun toString(): String {
+        return "$id-$url-$createdAt"
+    }
 }

@@ -11,17 +11,17 @@ import io.reactivex.Single
 @Dao
 interface UrlDao {
     @Insert(onConflict = REPLACE)
-    fun insertUrl(url: UrlModel): Single<Unit>
+    suspend fun insertUrl(url: UrlModel)
 
-    @Query("select * from URL")
-    fun getListUrl(): Flowable<List<UrlModel>>
+    @Query("select * from URL order by URL.id DESC")
+    suspend fun getListUrl(): List<UrlModel>
 
     @Query("delete from URL where id = :id")
-    fun removeUrl(id: Int): Single<Int>
+    suspend fun removeUrl(id: Int): Int
 
     @Query("select * from URL where id = :id")
-    fun getUrlById(id: Int): Single<UrlModel>
+    suspend fun getUrlById(id: Int): UrlModel
 
     @Query("delete from URL")
-    fun removeAllLocalData(): Single<Int>
+    suspend fun removeAllLocalData(): Int
 }

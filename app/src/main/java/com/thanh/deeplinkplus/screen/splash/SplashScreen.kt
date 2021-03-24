@@ -32,7 +32,7 @@ class SplashScreen: AppCompatActivity(){
     }
 
     private fun navigateToMain(){
-        val activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this, tv_app_name, "tv_app_name")
+        ActivityOptionsCompat.makeSceneTransitionAnimation(this, tv_app_name, "tv_app_name")
         startActivity(Intent(this@SplashScreen, HomeActivity::class.java))
         this.finish()
 

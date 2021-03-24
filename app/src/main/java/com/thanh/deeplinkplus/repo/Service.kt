@@ -1,11 +1,11 @@
-package com.thanh.deeplinkplus.service
+package com.thanh.deeplinkplus.repo
 
 import com.thanh.deeplinkplus.model.UpdateModel
 import io.reactivex.Observable
+import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
-import retrofit2.http.Path
 
-interface UpdateService {
+interface Service {
     @GET("update_checking")
     fun getUpdateInfo(): Observable<UpdateModel>
 
