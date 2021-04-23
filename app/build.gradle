@@ -24,10 +24,19 @@ android {
         }
     }
 
+    dataBinding {
+        enabled = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(":permission_manager")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.core:core-ktx:1.0.2'
@@ -59,12 +68,16 @@ dependencies {
 
     //Coroutine
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
-    //koin
-    implementation "org.koin:koin-androidx-scope:$koin_version"
-    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
-    implementation "org.koin:koin-androidx-fragment:$koin_version"
+//    //koin
+//    implementation "org.koin:koin-androidx-scope:$koin_version"
+//    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+//    implementation "org.koin:koin-androidx-fragment:$koin_version"
 
     /* Android Architecture Component - LiveData & ViewModel  */
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+
+    //Kodein
+    implementation("org.kodein.di:kodein-di-generic-jvm:$kodein_version")
+    implementation("org.kodein.di:kodein-di-framework-android-x:$kodein_version")
 }

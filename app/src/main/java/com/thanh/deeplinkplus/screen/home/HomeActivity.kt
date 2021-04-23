@@ -13,7 +13,9 @@ import com.thanh.deeplinkplus.R
 import com.thanh.deeplinkplus.common.adapter.RecyclerManager
 import com.thanh.deeplinkplus.common.adapter.item.spacing.SpacingRecyclerItem
 import com.thanh.deeplinkplus.common.base.BaseActivity
+import com.thanh_nguyen.permission_manager.permission.PermissionResult
 import com.thanh.deeplinkplus.common.resources.Resources
+import com.thanh.deeplinkplus.databinding.ActivityHomeBinding
 import com.thanh.deeplinkplus.dialog.FactoryDialog
 import com.thanh.deeplinkplus.extension.onClick
 import com.thanh.deeplinkplus.extension.showMessage
@@ -28,20 +30,21 @@ import com.thanh.deeplinkplus.screen.home.item.UrlRecyclerViewItem
 import com.thanh.deeplinkplus.screen.home.item.empty_item.EmptyListRecycleViewItem
 import com.thanh.deeplinkplus.screen.home.viewmodel.HomeViewModel
 import com.thanh.deeplinkplus.storage.AppPreferences
+import kodeinViewModel
 import kotlinx.android.synthetic.main.activity_home.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.lang.Exception
+import kotlinx.coroutines.*
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.kodein
 import kotlin.reflect.KClass
 
-class HomeActivity: BaseActivity(), IUrlRecycleViewListener{
+class HomeActivity: BaseActivity<ActivityHomeBinding, HomeViewModel>(), IUrlRecycleViewListener, KodeinAware{
+
+    override val kodein by kodein()
 
     private lateinit var mRecyclerManager: RecyclerManager<KClass<*>>
-    private val viewModel: HomeViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
-        initViewModel(viewModel)
         initCluster()
         initListener()
         initObservers()
@@ -49,7 +52,7 @@ class HomeActivity: BaseActivity(), IUrlRecycleViewListener{
     }
 
     private fun initUI() {
-        tvVersion?.text = viewModel.requestVersionName()
+        dataBinding.tvVersion.text = viewModel.requestVersionName()
     }
 
     private fun initObservers() {
@@ -61,12 +64,13 @@ class HomeActivity: BaseActivity(), IUrlRecycleViewListener{
             if (it == null)
                 return@observe
 
-            edt_deeplink?.setText(it.url)
-            tv_mode?.text = when (it.typeUrl) {
+            dataBinding.edtDeeplink.setText(it.url)
+            dataBinding.tvMode.text = when (it.typeUrl) {
                 TypeUrl.DEEP_LINK -> Resources.getString(R.string.mode_deep_link)
                 TypeUrl.UNIVERSAL_LINK -> Resources.getString(R.string.mode_universal_link)
                 else -> Resources.getString(R.string.mode_other)
             }
+            dataBinding.edtDeeplink.setSelection(it.url.length)
         }
 
         viewModel.getErrorMessageNotifier().observe(this){
@@ -129,6 +133,15 @@ class HomeActivity: BaseActivity(), IUrlRecycleViewListener{
     private fun initListener() {
         btn_go?.onClick {
             viewModel.handleUrl(edt_deeplink?.text()?:return@onClick)
+//            CoroutineScope(Job() + Dispatchers.Default).launch {
+//                withContext(Dispatchers.Main){
+//                    handleResult(PermissionManager.requestPermissions(
+//                        this@HomeActivity,
+//                        999,
+//                        android.Manifest.permission.CAMERA
+//                    ))
+//                }
+//            }
         }
 
         //clear
@@ -147,6 +160,15 @@ class HomeActivity: BaseActivity(), IUrlRecycleViewListener{
                     showMessage(Resources.getString(R.string.copy_success))
                 }
             }
+        }
+    }
+
+    private fun handleResult(result: PermissionResult) {
+        when(result){
+            is PermissionResult.PermissionDenied -> Log.e("PermissionDenied", Gson().toJson(result));
+            is PermissionResult.PermissionGranted -> Log.e("PermissionGranted", Gson().toJson(result));
+            is PermissionResult.ShowRational -> Log.e("ShowRational", Gson().toJson(result));
+            is PermissionResult.PermissionDeniedPermanently -> Log.e("DeniedPermanently", Gson().toJson(result));
         }
     }
 
@@ -214,5 +236,7 @@ class HomeActivity: BaseActivity(), IUrlRecycleViewListener{
         viewModel.removeUrlById(url)
     }
 
+    override val layoutResId: Int = R.layout.activity_home
 
+    override val initViewModel: HomeViewModel by kodeinViewModel()
 }

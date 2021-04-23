@@ -7,10 +7,11 @@ import com.thanh.deeplinkplus.common.resources.Resources
 import com.thanh.deeplinkplus.di.*
 import com.thanh.deeplinkplus.storage.AppPreferences
 import com.thanh.deeplinkplus.storage.local_db.database.AppDatabase
-import org.koin.core.context.startKoin
-import org.koin.core.logger.Level
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.x.androidXModule
 
-class DeepLinkApplication: Application(), LifecycleObserver {
+class DeepLinkApplication: Application(), LifecycleObserver, KodeinAware {
     companion object{
         lateinit var appContext: Context
     }
@@ -19,9 +20,13 @@ class DeepLinkApplication: Application(), LifecycleObserver {
         AppPreferences.init(this)
         AppDatabase.init(this)
         super.onCreate()
-        startKoin {
-            modules(appModule, serviceModule, useCaseModule, viewModelModule)
-            printLogger(Level.DEBUG)
-        }
+    }
+
+    override val kodein by Kodein.lazy {
+        import(androidXModule((this@DeepLinkApplication)))
+        import(appModule)
+        import(serviceModule)
+        import(useCaseModule)
+        import(viewModelModule)
     }
 }

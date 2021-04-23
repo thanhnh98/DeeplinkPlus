@@ -2,24 +2,28 @@ package com.thanh.deeplinkplus.common.base
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import org.kodein.di.KodeinAware
 
-abstract class BaseActivity: AppCompatActivity() {
+abstract class BaseActivity<VB: ViewDataBinding, VM: BaseViewModel>: AppCompatActivity(), KodeinAware {
 
-    private lateinit var baseViewModel: BaseViewModel
+    lateinit var viewModel: VM
+    lateinit var dataBinding: VB
+
+    abstract val layoutResId: Int
+    abstract val initViewModel: VM
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        dataBinding = DataBindingUtil.setContentView(this, layoutResId)
+        viewModel = initViewModel
+        viewModel.init()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if (this::baseViewModel.isInitialized)
-            baseViewModel.onDestroy()
-    }
-
-    internal fun initViewModel(viewModel: BaseViewModel){
-        baseViewModel = ViewModelProvider(this).get(viewModel::class.java)
-        baseViewModel.init()
+        if (this::viewModel.isInitialized)
+            viewModel.onDestroy()
     }
 }
