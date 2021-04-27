@@ -4,16 +4,13 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.gson.Gson
 import com.thanh.deeplinkplus.R
 import com.thanh.deeplinkplus.common.adapter.RecyclerManager
 import com.thanh.deeplinkplus.common.adapter.item.spacing.SpacingRecyclerItem
 import com.thanh.deeplinkplus.common.base.BaseActivity
-import com.thanh_nguyen.permission_manager.permission.PermissionResult
 import com.thanh.deeplinkplus.common.resources.Resources
 import com.thanh.deeplinkplus.databinding.ActivityHomeBinding
 import com.thanh.deeplinkplus.dialog.FactoryDialog
@@ -160,15 +157,6 @@ class HomeActivity: BaseActivity<ActivityHomeBinding, HomeViewModel>(), IUrlRecy
                     showMessage(Resources.getString(R.string.copy_success))
                 }
             }
-        }
-    }
-
-    private fun handleResult(result: PermissionResult) {
-        when(result){
-            is PermissionResult.PermissionDenied -> Log.e("PermissionDenied", Gson().toJson(result));
-            is PermissionResult.PermissionGranted -> Log.e("PermissionGranted", Gson().toJson(result));
-            is PermissionResult.ShowRational -> Log.e("ShowRational", Gson().toJson(result));
-            is PermissionResult.PermissionDeniedPermanently -> Log.e("DeniedPermanently", Gson().toJson(result));
         }
     }
 
