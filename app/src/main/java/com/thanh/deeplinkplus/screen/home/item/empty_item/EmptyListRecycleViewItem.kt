@@ -14,5 +14,4 @@ class EmptyListRecycleViewItem: RecycleViewItem<EmptyListRecycleVH>() {
     override fun createViewHolder(context: Context?): RecyclerView.ViewHolder {
         return EmptyListRecycleVH(LayoutInflater.from(context).inflate(R.layout.item_empty, null))
     }
-
 }

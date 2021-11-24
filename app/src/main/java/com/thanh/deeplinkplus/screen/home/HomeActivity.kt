@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import com.thanh.deeplinkplus.R
 import com.thanh.deeplinkplus.common.adapter.RecyclerManager
@@ -54,7 +55,7 @@ class HomeActivity: BaseActivity<ActivityHomeBinding, HomeViewModel>(), IUrlRecy
 
     private fun initObservers() {
         viewModel.onListUrlUpdated().observe(this){
-                showListUrl(it?:return@observe)
+            showListUrl(it?:return@observe)
         }
 
         viewModel.onCurrentUrlSelectedChanged().observe(this){
